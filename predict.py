@@ -25,12 +25,20 @@ def load_image(path_or_url):
 def analyze_image(image_path):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
-    # Find the best checkpoint
-    checkpoints = glob.glob("checkpoints/*.pth")
-    if not checkpoints:
-        print("ERROR: No checkpoints found in the folder!")
-        return
-    latest_checkpoint = max(checkpoints, key=os.path.getmtime)
+    # Find (or download) the best checkpoint
+    os.makedirs("checkpoints", exist_ok=True)
+    local_checkpoint_path = "checkpoints/step_APP_READY.pth"
+    
+    if not os.path.exists(local_checkpoint_path):
+        print("Model weights not found locally. Downloading from Hugging Face (~423 MB)...")
+        hf_hub_download(
+            repo_id="Santiago64/ai-image-detector-hybrid",
+            filename="step_APP_READY.pth",
+            local_dir="checkpoints"
+        )
+        print("Download complete!")
+        
+    latest_checkpoint = local_checkpoint_path
     
     # Rebuild the blank architecture and inject the weights
     model, _, _ = build_model(device)
