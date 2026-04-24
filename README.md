@@ -1,2 +1,2 @@
 # ai_image_detection
-Transfer Learning algorithm trained using the GenImage dataset that combines a CNN (ResNet-50) with a Vision Transformer in order to identify if an internet image is real or it was generated using Artificial Intelligence.
+Hybrid Deepfake Detector combining a ResNet-50 CNN and a Vision Transformer (ViT-B/16) to identify AI-generated images. It combines two layers to increase accuracy: a Layer 1 basic EXIF/PNG metadata scanner to catch raw generations, and a Layer 2 PyTorch vision model for deep structural analysis.
